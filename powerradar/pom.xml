@@ -11,7 +11,7 @@
 	<groupId>com.stie</groupId>
 	<artifactId>powerradar</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>powerradar</name>
 	<description>Data Calculation for Power Radar</description>
 
