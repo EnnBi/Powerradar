@@ -1,6 +1,7 @@
 package com.stie.powerradar;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 
@@ -41,7 +42,7 @@ public class AmazonClient {
         String fileUrl = "";
         try {
 
-            String fileName = type+"_"+LocalTime.now(ZoneId.of("Asia/Kolkata"))+".json";
+            String fileName = type+"_"+LocalDate.now()+"_"+LocalTime.now(ZoneId.of("Asia/Kolkata"))+".json";
             fileUrl = endpointUrl + "/" + bucketName +"/" + fileName;
             uploadFileTos3bucket(fileName, file);
             file.delete();

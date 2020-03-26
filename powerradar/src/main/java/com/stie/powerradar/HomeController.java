@@ -23,7 +23,7 @@ public class HomeController {
 	@ResponseBody
 	public String get(){
 		System.err.println("data");
-		return "how are you";
+		return "Welcome Power Radar Data Fetch Api";
 	}
 	
 	
@@ -48,6 +48,30 @@ public class HomeController {
 		fileWriter.flush();
 		fileWriter.close();
 		amazonClient.uploadFile(file, "Measurement");
+		return HttpStatus.OK;
+	}
+	
+	@RequestMapping(value="/pulsemetermeasurement",method=RequestMethod.POST)
+	@ResponseBody
+	public HttpStatus pulsemetermeasurement(@RequestBody String data) throws IOException{
+		File file = new File("Pulse_Meter_Measurement");
+		FileWriter fileWriter= new FileWriter(file,true);
+		fileWriter.write(data);
+		fileWriter.flush();
+		fileWriter.close();
+		amazonClient.uploadFile(file, "Pulse_Meter_Measurement");
+		return HttpStatus.OK;
+	}
+	
+	@RequestMapping(value="/pan42measurement",method=RequestMethod.POST)
+	@ResponseBody
+	public HttpStatus pan42measurement(@RequestBody String data) throws IOException{
+		File file = new File("Pan_42_Measurement");
+		FileWriter fileWriter= new FileWriter(file,true);
+		fileWriter.write(data);
+		fileWriter.flush();
+		fileWriter.close();
+		amazonClient.uploadFile(file, "Pan_42_Measurement");
 		return HttpStatus.OK;
 	}
 }
