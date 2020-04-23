@@ -1,7 +1,5 @@
 package com.stie.powerradar;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

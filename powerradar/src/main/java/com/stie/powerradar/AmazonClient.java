@@ -27,9 +27,9 @@ public class AmazonClient {
      String endpointUrl;
     @Value("${amazonProperties.bucketName}")
     private String bucketName;
-    @Value("${aws.access.key}")//("${cloud.aws.credentials.accessKey}")
+    @Value("${cloud.aws.credentials.accessKey}")//("${aws.access.key}")//
     private String accessKey;
-    @Value("${aws.secret.key}")//("${cloud.aws.credentials.secretKey}")
+    @Value("${cloud.aws.credentials.secretKey}")//("${aws.secret.key}")//
     private String secretKey;
 
     @PostConstruct
