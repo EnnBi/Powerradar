@@ -32,7 +32,7 @@ public class HomeController {
 	@Autowired
 	private AmazonClient amazonClient;
 	
-	@Autowired
+	/*@Autowired
 	SiteDao siteDao;
 	
 	@Autowired
@@ -44,7 +44,7 @@ public class HomeController {
 	@Autowired
 	ZoneDao zoneDao;
 	@Autowired
-	MeasurementDao measurementDao;
+	MeasurementDao measurementDao;*/
 	
 	@RequestMapping(value="/",method=RequestMethod.GET)
 	@ResponseBody
@@ -102,7 +102,7 @@ public class HomeController {
 		return HttpStatus.OK;
 	}
 	
-	@RequestMapping(value="/sites",method=RequestMethod.POST)
+	/*@RequestMapping(value="/sites",method=RequestMethod.POST)
 	@ResponseBody
 	public HttpStatus saveSite(@RequestBody Sites sites) throws JsonProcessingException, IOException{
 
@@ -158,5 +158,5 @@ public class HomeController {
 				return zoneDao.save(new Zone(id,name));
 			}
 	}
-	
+	*/
 }
