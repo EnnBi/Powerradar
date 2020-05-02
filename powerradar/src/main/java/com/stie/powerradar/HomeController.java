@@ -3,9 +3,19 @@ package com.stie.powerradar;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,30 +31,34 @@ import com.stie.powerradar.dao.ZoneDao;
 import com.stie.powerradar.domains.Device;
 import com.stie.powerradar.domains.MeasurementsWrapper;
 import com.stie.powerradar.domains.Panel;
+import com.stie.powerradar.domains.Search;
 import com.stie.powerradar.domains.Site;
 import com.stie.powerradar.domains.Sites;
 import com.stie.powerradar.domains.Zone;
+import com.stie.powerradar.projections.IdAndName;
+import com.stie.powerradar.projections.MeasurementDTO;
 
 
 @RestController
+@CrossOrigin 
 public class HomeController {
 
 	@Autowired
 	private AmazonClient amazonClient;
 	
-	/*@Autowired
+	@Autowired
 	SiteDao siteDao;
 	
 	@Autowired
 	DeviceDao deviceDao;
 	
-	@Autowired
+	@Autowired 
 	PanelDao panelDao;
 	
-	@Autowired
+	@Autowired 
 	ZoneDao zoneDao;
 	@Autowired
-	MeasurementDao measurementDao;*/
+	MeasurementDao measurementDao;
 	
 	@RequestMapping(value="/",method=RequestMethod.GET)
 	@ResponseBody
@@ -102,7 +116,7 @@ public class HomeController {
 		return HttpStatus.OK;
 	}
 	
-	/*@RequestMapping(value="/sites",method=RequestMethod.POST)
+	@RequestMapping(value="/sites",method=RequestMethod.POST)
 	@ResponseBody
 	public HttpStatus saveSite(@RequestBody Sites sites) throws JsonProcessingException, IOException{
 
@@ -119,7 +133,7 @@ public class HomeController {
 		return HttpStatus.OK;
 	}
 	
-	@RequestMapping(value="/measurements",method=RequestMethod.POST)
+	//@RequestMapping(value="/measurements",method=RequestMethod.POST)
 	@ResponseBody
 	public HttpStatus  saveMeasurement(@RequestBody MeasurementsWrapper measurements) throws JsonProcessingException, IOException{
 		measurements.getMeasurements().forEach(m->{
@@ -127,6 +141,50 @@ public class HomeController {
 			measurementDao.save(m);
 		});
 		return HttpStatus.OK; 
+	}
+	
+	
+	@RequestMapping("/realtimecost")
+	public ResponseEntity<?> getData() throws ParseException{
+		
+		LocalTime time = LocalTime.of(00, 00,00);
+		LocalDateTime startDate = LocalDateTime.of(LocalDate.now(),time);
+		LocalDateTime endDate = LocalDateTime.of(LocalDate.now().plusDays(1),time);
+		Search search = new Search(50341,"Heating and Cooling",startDate,endDate);
+		List<MeasurementDTO> dtos = measurementDao.getData(search);
+		return new ResponseEntity<List<MeasurementDTO>>(dtos,HttpStatus.OK);
+	}
+	
+	@RequestMapping("/realpowerconsumption")
+	public ResponseEntity<?> powerConsumption() {
+
+		LocalDateTime localDateTime =  measurementDao.findMaxTime();
+		Long value = measurementDao.findPowerConsumption(localDateTime, 50341);
+		
+		Map<String, Object> map=new LinkedHashMap<String, Object>();
+		map.put("powerconsumption", value);
+		map.put("devicegroup",measurementDao.findPowerConsumptionGroupByDeviceCategory(localDateTime, 50341));
+		return new ResponseEntity<Map>(map,HttpStatus.OK);
+	}
+	
+	@RequestMapping("/sites")
+	public ResponseEntity<?> getSites(){
+		return new ResponseEntity<Iterable<Site>>( siteDao.findAll(),HttpStatus.OK);
+	}
+	 
+	@RequestMapping("/categories/{site}")
+	public ResponseEntity<?> getDeviceCategoriesOfSite(@PathVariable("site") long id){
+		return new ResponseEntity<Iterable<String>>(deviceDao.findDeviceCategoryBySite_Id(id),HttpStatus.OK);
+	}
+	
+	@RequestMapping("/types/{category}")
+	public ResponseEntity<?> getDeviceTypesOnCategory(@PathVariable("category") String category){
+		return new ResponseEntity<Iterable<String>>(deviceDao.findDeviceTypeByDeviceCategory(category),HttpStatus.OK);
+	}
+	
+	@RequestMapping("/devices/{type}")
+	public ResponseEntity<?> getDevicesOnDeviceType(@PathVariable("name") String type){
+		return new ResponseEntity<Iterable<IdAndName>>(deviceDao.findByDeviceType(type),HttpStatus.OK);
 	}
 	
 	public void recursiveDevice(Device device,Site site){
@@ -158,5 +216,5 @@ public class HomeController {
 				return zoneDao.save(new Zone(id,name));
 			}
 	}
-	*/
+	
 }

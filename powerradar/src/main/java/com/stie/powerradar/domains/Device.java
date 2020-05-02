@@ -18,6 +18,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Device{
@@ -57,11 +58,17 @@ public class Device{
 	@Transient
 	String zone_name;
 	
-	String device_category;
+	@Column(name="device_category")
+	@JsonProperty("device_category")
+	String deviceCategory;
 	
-	String device_type;
+	@JsonProperty("device_type")
+	@Column(name="device_type")
+	String deviceType;
 	
-	String electrical_type;
+	@JsonProperty("electrical_type")
+	@Column(name="electrical_type")
+	String electricalType;
 	
 	String description;
 	@Transient
@@ -132,22 +139,28 @@ public class Device{
 		this.zone = zone;
 	}
 
-
-
-	public String getDevice_type() {
-		return device_type;
+	public String getDeviceCategory() {
+		return deviceCategory;
 	}
 
-	public void setDevice_type(String device_type) {
-		this.device_type = device_type;
+	public void setDeviceCategory(String deviceCategory) {
+		this.deviceCategory = deviceCategory;
 	}
 
-	public String getElectrical_type() {
-		return electrical_type;
+	public String getDeviceType() {
+		return deviceType;
 	}
 
-	public void setElectrical_type(String electrical_type) {
-		this.electrical_type = electrical_type;
+	public void setDeviceType(String deviceType) {
+		this.deviceType = deviceType;
+	}
+
+	public String getElectricalType() {
+		return electricalType;
+	}
+
+	public void setElectricalType(String electricalType) {
+		this.electricalType = electricalType;
 	}
 
 	public String getPanel_name() {
@@ -174,14 +187,6 @@ public class Device{
 
 	public void setZone_name(String zone_name) {
 		this.zone_name = zone_name;
-	}
-
-	public String getDevice_category() {
-		return device_category;
-	}
-
-	public void setDevice_category(String device_category) {
-		this.device_category = device_category;
 	}
 
 	public String getDescription() {

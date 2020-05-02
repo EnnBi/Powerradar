@@ -1,6 +1,6 @@
 package com.stie.powerradar.domains;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,7 +27,7 @@ public class Measurement {
 	
 	@JsonProperty("measurement_time(UTC)")
 	@Column(name="Measurement_Time")
-	Date measurement_time;
+	LocalDateTime measurement_time;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="Site_Id")
@@ -69,13 +69,11 @@ public class Measurement {
 		this.device = device;
 	}
 
-
-
-	public Date getMeasurement_time() {
+	public LocalDateTime getMeasurement_time() {
 		return measurement_time;
 	}
 
-	public void setMeasurement_time(Date measurement_time) {
+	public void setMeasurement_time(LocalDateTime measurement_time) {
 		this.measurement_time = measurement_time;
 	}
 
