@@ -133,7 +133,7 @@ public class HomeController {
 		return HttpStatus.OK;
 	}
 	
-	//@RequestMapping(value="/measurements",method=RequestMethod.POST)
+	@RequestMapping(value="/measurements",method=RequestMethod.POST)
 	@ResponseBody
 	public HttpStatus  saveMeasurement(@RequestBody MeasurementsWrapper measurements) throws JsonProcessingException, IOException{
 		measurements.getMeasurements().forEach(m->{
